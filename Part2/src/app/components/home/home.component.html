@@ -1,2 +1,40 @@
-<h2 class="page_title">Home</h2>
-<p>Welcome to the Harvey Norman Inventory System.</p>
+<h2 class="page_title">Welcome to the Harvey Norman Inventory System</h2>
+
+<div class="form_card">
+  <p>This system lets you manage store inventory. Use the navigation above to add, edit, delete and search for items.</p>
+</div>
+
+<div class="form_card">
+  <h3>Current Inventory</h3>
+  <p *ngIf="all_items.length === 0" class="no_results">No items in inventory.</p>
+  <div class="table_wrapper" *ngIf="all_items.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Supplier</th>
+          <th>Stock Status</th>
+          <th>Popular</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of all_items">
+          <td>{{ item.item_id }}</td>
+          <td><strong>{{ item.item_name }}</strong></td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>${{ item.price.toFixed(2) }}</td>
+          <td>{{ item.supplier_name }}</td>
+          <td><span [class]="get_badge_class(item.stock_status)">{{ item.stock_status }}</span></td>
+          <td>{{ item.popular_item }}</td>
+          <td>{{ item.comment || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

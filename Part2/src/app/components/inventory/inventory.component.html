@@ -1,2 +1,139 @@
-<h2 class="page_title">Inventory</h2>
-<p>Inventory page coming soon.</p>
+<h2 class="page_title">Manage Inventory</h2>
+
+<div *ngIf="message_text" [class]="'msg_' + message_type">{{ message_text }}</div>
+
+<div class="form_card">
+  <h3>Load Item to Edit</h3>
+  <label>Item Name</label>
+  <input type="text" [(ngModel)]="edit_name_input" placeholder="Enter the item name" />
+  <div class="btn_row">
+    <button (click)="load_for_edit()" class="btn_secondary">Load Item</button>
+  </div>
+</div>
+
+<div class="form_card">
+  <h3>Delete Item</h3>
+  <label>Item Name</label>
+  <input type="text" [(ngModel)]="delete_name_input" placeholder="Enter the item name" />
+  <div class="btn_row">
+    <button (click)="initiate_delete()" class="btn_danger">Delete Item</button>
+  </div>
+  <div *ngIf="show_confirm" class="confirm_box">
+    <p>Are you sure you want to delete <strong>{{ pending_delete_name }}</strong>? This cannot be undone.</p>
+    <button (click)="confirm_delete()" class="btn_danger">Yes, Delete</button>
+    <button (click)="cancel_delete()" class="btn_secondary">Cancel</button>
+  </div>
+</div>
+
+<div class="form_card">
+  <h3>Add / Update Item</h3>
+  <p class="form_note">All fields except Comment are required</p>
+
+  <label>Item ID</label>
+  <input type="text" [(ngModel)]="form_id" placeholder="ITM006" />
+
+  <label>Item Name</label>
+  <input type="text" [(ngModel)]="form_name" placeholder="Sony Headphones" />
+
+  <label>Category</label>
+  <select [(ngModel)]="form_category">
+    <option value="">Select a category</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Furniture">Furniture</option>
+    <option value="Clothing">Clothing</option>
+    <option value="Tools">Tools</option>
+    <option value="Miscellaneous">Miscellaneous</option>
+  </select>
+
+  <label>Quantity</label>
+  <input type="number" [(ngModel)]="form_quantity" min="0" placeholder="10" />
+
+  <label>Price ($)</label>
+  <input type="number" [(ngModel)]="form_price" min="0" step="0.01" placeholder="299.99" />
+
+  <label>Supplier Name</label>
+  <input type="text" [(ngModel)]="form_supplier" placeholder="Sony Australia" />
+
+  <label>Stock Status</label>
+  <select [(ngModel)]="form_stock">
+    <option value="">Select a status</option>
+    <option value="In Stock">In Stock</option>
+    <option value="Low Stock">Low Stock</option>
+    <option value="Out of Stock">Out of Stock</option>
+  </select>
+
+  <label>Popular Item</label>
+  <select [(ngModel)]="form_popular">
+    <option value="">Select yes or no</option>
+    <option value="Yes">Yes</option>
+    <option value="No">No</option>
+  </select>
+
+  <label>Comment</label>
+  <input type="text" [(ngModel)]="form_comment" placeholder="Any notes about this item (optional)" />
+
+  <div class="btn_row">
+    <button (click)="add_item()" class="btn_primary">Add Item</button>
+    <button (click)="update_item()" class="btn_secondary">Update Item</button>
+    <button (click)="clear_form()" class="btn_outline">Clear Form</button>
+  </div>
+</div>
+
+<div class="btn_row">
+  <button (click)="switch_table('all')"     [class]="active_table === 'all'     ? 'btn_primary' : 'btn_outline'">All Items ({{ all_items.length }})</button>
+  <button (click)="switch_table('popular')" [class]="active_table === 'popular' ? 'btn_primary' : 'btn_outline'">Popular Items ({{ popular_items.length }})</button>
+</div>
+
+<div *ngIf="active_table === 'all'">
+  <p *ngIf="all_items.length === 0" class="no_results">No items in inventory.</p>
+  <div class="table_wrapper" *ngIf="all_items.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Category</th><th>Qty</th>
+          <th>Price</th><th>Supplier</th><th>Stock Status</th><th>Popular</th><th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of all_items">
+          <td>{{ item.item_id }}</td>
+          <td><strong>{{ item.item_name }}</strong></td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>${{ item.price.toFixed(2) }}</td>
+          <td>{{ item.supplier_name }}</td>
+          <td><span [class]="get_badge_class(item.stock_status)">{{ item.stock_status }}</span></td>
+          <td>{{ item.popular_item }}</td>
+          <td>{{ item.comment || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="active_table === 'popular'">
+  <p *ngIf="popular_items.length === 0" class="no_results">No popular items found.</p>
+  <div class="table_wrapper" *ngIf="popular_items.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Category</th><th>Qty</th>
+          <th>Price</th><th>Supplier</th><th>Stock Status</th><th>Popular</th><th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of popular_items">
+          <td>{{ item.item_id }}</td>
+          <td><strong>{{ item.item_name }}</strong></td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>${{ item.price.toFixed(2) }}</td>
+          <td>{{ item.supplier_name }}</td>
+          <td><span [class]="get_badge_class(item.stock_status)">{{ item.stock_status }}</span></td>
+          <td>{{ item.popular_item }}</td>
+          <td>{{ item.comment || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
