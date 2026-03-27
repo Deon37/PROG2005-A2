@@ -1,2 +1,62 @@
 <h2 class="page_title">Privacy & Security</h2>
-<p>Privacy page coming soon.</p>
+
+<div class="form_card">
+  <h3>Who Should Have Access</h3>
+  <p>
+    This inventory system is intended for Harvey Norman staff only. That includes store managers,
+    department supervisors and stock team members. No one outside of the store team should be
+    able to view or change inventory data. Customers, contractors or members of the public
+    should never have access to this system.
+  </p>
+</div>
+
+<div class="form_card">
+  <h3>How Access Should Be Controlled</h3>
+  <p>
+    In a real deployment of this system there are two main ways to make sure only the right
+    people can get in.
+  </p>
+  <p style="margin-top: 10px;">
+    The first option is a login system. Staff would need a username and password to access
+    the app. Managers could have extra permissions like deleting items, while regular staff
+    might only be able to view or add stock. Passwords should be strong and sessions should
+    time out after a period of inactivity so a logged in computer left unattended cannot be
+    misused.
+  </p>
+  <p style="margin-top: 10px;">
+    The second option is an IP whitelist. This means the system would only load if the request
+    is coming from an approved IP address, such as the store network. Anyone trying to access
+    it from outside the store network, like from home or on mobile data, would be blocked
+    automatically. This works well for an in-store system where staff only need access while
+    they are at work.
+  </p>
+  <p style="margin-top: 10px;">
+    For the best security both options could be used together. Staff would need to be on the
+    store network and also logged in before they can access the inventory.
+  </p>
+</div>
+
+<div class="form_card">
+  <h3>Input Validation</h3>
+  <p>
+    This app checks all form inputs before saving anything. Fields like Quantity and Price
+    only accept numbers and all required fields must be filled. This stops bad data from
+    getting into the system and also protects against basic attacks where someone tries to
+    enter harmful content into a text field.
+  </p>
+</div>
+
+<div class="form_card">
+  <h3>Data and Privacy</h3>
+  <p>
+    This version of the app stores data in memory only. When the browser is closed or refreshed
+    all data is gone. In a real system the inventory data would be stored in a database.
+    That database should be secured so that only the application can talk to it and the data
+    should be backed up regularly in case something goes wrong.
+  </p>
+  <p style="margin-top: 10px;">
+    Australian businesses also need to follow the Privacy Act 1988. Even though inventory data
+    is not personal information, supplier details and pricing information is sensitive and
+    should not be shared outside the business.
+  </p>
+</div>

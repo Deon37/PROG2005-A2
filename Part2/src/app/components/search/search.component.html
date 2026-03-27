@@ -1,2 +1,62 @@
-<h2 class="page_title">Search</h2>
-<p>Search page coming soon.</p>
+<h2 class="page_title">Search Items</h2>
+
+<div class="form_card">
+  <h3>Search Inventory</h3>
+
+  <label>Item Name</label>
+  <input type="text" [(ngModel)]="search_term" placeholder="Type an item name" />
+
+  <label>Filter by Category</label>
+  <select [(ngModel)]="category_filter">
+    <option value="">All Categories</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Furniture">Furniture</option>
+    <option value="Clothing">Clothing</option>
+    <option value="Tools">Tools</option>
+    <option value="Miscellaneous">Miscellaneous</option>
+  </select>
+
+  <label>Filter by Stock Status</label>
+  <select [(ngModel)]="stock_filter">
+    <option value="">All Statuses</option>
+    <option value="In Stock">In Stock</option>
+    <option value="Low Stock">Low Stock</option>
+    <option value="Out of Stock">Out of Stock</option>
+  </select>
+
+  <div class="btn_row">
+    <button (click)="run_search()" class="btn_primary">Search</button>
+    <button (click)="clear_search()" class="btn_outline">Clear</button>
+  </div>
+</div>
+
+<div *ngIf="has_searched">
+  <p *ngIf="search_results.length === 0" class="no_results">No items match your search.</p>
+
+  <div *ngIf="search_results.length > 0">
+    <p style="margin-bottom: 10px; color: #555;">{{ search_results.length }} result{{ search_results.length !== 1 ? 's' : '' }} found</p>
+    <div class="table_wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Category</th><th>Qty</th>
+            <th>Price</th><th>Supplier</th><th>Stock Status</th><th>Popular</th><th>Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of search_results">
+            <td>{{ item.item_id }}</td>
+            <td><strong>{{ item.item_name }}</strong></td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.price.toFixed(2) }}</td>
+            <td>{{ item.supplier_name }}</td>
+            <td><span [class]="get_badge_class(item.stock_status)">{{ item.stock_status }}</span></td>
+            <td>{{ item.popular_item }}</td>
+            <td>{{ item.comment || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -126,6 +126,37 @@ nav a.nav_active {
   margin-top: 16px;
 }
 
+.faq_btn {
+  width: 100%;
+  background: #fafafa;
+  border: 1px solid #eee;
+  padding: 12px 15px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.faq_btn:hover {
+  background-color: #fff0ef;
+}
+
+.faq_answer {
+  padding: 12px 15px;
+  background: white;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid #eee;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
 .btn_primary { background-color: #d52b1e; color: white; border: none; padding: 10px 22px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background-color 0.2s; }
 .btn_primary:hover { background-color: #b52018; }
 .btn_secondary { background-color: #555; color: white; border: none; padding: 10px 22px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background-color 0.2s; }
