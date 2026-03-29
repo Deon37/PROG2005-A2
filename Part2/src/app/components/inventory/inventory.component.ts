@@ -1,9 +1,16 @@
+// Title: Inventory Component
+// Author: Deon Miller
+// Student ID: 23748590
+// Unit: PROG2005
+// Assignment: Assessment 2 Part 2
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InventoryService } from '../../services/inventory.service';
 import { InventoryItem } from '../../models/item.model';
 
+// this component handles all inventory management including add, edit, update and delete
 @Component({
   selector: 'app-inventory',
   standalone: true,
@@ -17,6 +24,7 @@ export class InventoryComponent implements OnInit {
   popular_items: InventoryItem[] = [];
   active_table: string = 'all';
 
+  // form field variables bound to the input fields
   form_id: string = '';
   form_name: string = '';
   form_category: string = '';
@@ -39,15 +47,18 @@ export class InventoryComponent implements OnInit {
 
   constructor(private inventory_service: InventoryService) {}
 
+  // this function runs on page load and fetches the inventory lists
   ngOnInit(): void {
     this.refresh_lists();
   }
 
+  // this function gets the latest all items and popular items from the service
   refresh_lists(): void {
     this.all_items = this.inventory_service.get_all_items();
     this.popular_items = this.inventory_service.get_popular_items();
   }
 
+  // this function shows a message and clears it after 4 seconds
   show_message(type: string, text: string): void {
     this.message_type = type;
     this.message_text = text;
@@ -57,6 +68,7 @@ export class InventoryComponent implements OnInit {
     }, 4000);
   }
 
+  // this function clears all form fields
   clear_form(): void {
     this.form_id = '';
     this.form_name = '';
@@ -69,6 +81,8 @@ export class InventoryComponent implements OnInit {
     this.form_comment = '';
   }
 
+  // this function checks all required fields and returns an error message if something is wrong
+  // should use a switch case next time lol
   validate_form(): string {
     if (this.form_id.trim() === '')       return 'Item ID is required.';
     if (this.form_name.trim() === '')     return 'Item Name is required.';
@@ -83,6 +97,7 @@ export class InventoryComponent implements OnInit {
     return '';
   }
 
+  // this function finds an item by name and loads its values into the form
   load_for_edit(): void {
     if (this.edit_name_input.trim() === '') {
       this.show_message('error', 'Please enter an item name to load.');
@@ -106,6 +121,7 @@ export class InventoryComponent implements OnInit {
     this.show_message('info', found.item_name + ' loaded. Make your changes then click Update Item.');
   }
 
+  // this function validates the form and adds a new item to the inventory
   add_item(): void {
     const error: string = this.validate_form();
     if (error !== '') { this.show_message('error', error); return; }
@@ -132,6 +148,7 @@ export class InventoryComponent implements OnInit {
     this.refresh_lists();
   }
 
+  // this function validates the form and updates the existing item found by name
   update_item(): void {
     const error: string = this.validate_form();
     if (error !== '') { this.show_message('error', error); return; }
@@ -160,6 +177,7 @@ export class InventoryComponent implements OnInit {
     this.refresh_lists();
   }
 
+  // this function finds the item by name and shows a confirmation box before deleting
   initiate_delete(): void {
     if (this.delete_name_input.trim() === '') {
       this.show_message('error', 'Please enter an item name to delete.');
@@ -175,6 +193,7 @@ export class InventoryComponent implements OnInit {
     this.show_confirm = true;
   }
 
+  // this function deletes the item after the user confirms
   confirm_delete(): void {
     this.inventory_service.delete_item(this.pending_delete_index);
     this.show_message('success', this.pending_delete_name + ' was deleted.');
@@ -185,6 +204,7 @@ export class InventoryComponent implements OnInit {
     this.refresh_lists();
   }
 
+  // this function cancels the delete and hides the confirmation box
   cancel_delete(): void {
     this.show_confirm = false;
     this.pending_delete_index = -1;
@@ -192,14 +212,9 @@ export class InventoryComponent implements OnInit {
     this.show_message('info', 'Delete cancelled.');
   }
 
+  // this function switches the displayed table between all items and popular items
   switch_table(which: string): void {
     this.active_table = which;
     this.refresh_lists();
-  }
-
-  get_badge_class(stock_status: string): string {
-    if (stock_status === 'In Stock')  return 'badge in_stock';
-    if (stock_status === 'Low Stock') return 'badge low_stock';
-    return 'badge out_stock';
   }
 }

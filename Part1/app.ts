@@ -1,3 +1,10 @@
+// Title: Harvey Norman Inventory System
+// Author: Deon Miller
+// Student ID: 23748590
+// Unit: PROG2005
+// Assignment: Assessment 2 Part 1
+
+// this interface defines the shape of each inventory item
 interface InventoryItem {
   item_id: string;
   item_name: string;
@@ -10,6 +17,7 @@ interface InventoryItem {
   comment: string;
 }
 
+// starting inventory data loaded when the page opens
 let inventory: InventoryItem[] = [
   {
     item_id: 'ITM001',
@@ -68,6 +76,7 @@ let inventory: InventoryItem[] = [
   }
 ];
 
+// this function shows a message on the page and clears it after 4 seconds
 function show_message(type: string, message: string): void {
   const msg_div = document.getElementById('message_area') as HTMLDivElement;
   msg_div.className = 'message ' + type;
@@ -78,6 +87,7 @@ function show_message(type: string, message: string): void {
   }, 4000);
 }
 
+// this function returns the trimmed value of an input field by its id
 function get_input_value(id: string): string {
   const el = document.getElementById(id) as HTMLInputElement;
   if (el) {
@@ -86,6 +96,7 @@ function get_input_value(id: string): string {
   return '';
 }
 
+// this function clears all fields in the add/update form
 function clear_form(): void {
   const ids: string[] = [
     'input_id', 'input_name', 'input_category',
@@ -100,6 +111,7 @@ function clear_form(): void {
   }
 }
 
+// this function shows the selected section and hides all others
 function show_section(section_id: string): void {
   const sections = document.querySelectorAll('.content_section');
   for (let i: number = 0; i < sections.length; i++) {
@@ -117,6 +129,7 @@ function show_section(section_id: string): void {
   }
 }
 
+// this function checks all required fields and returns an error message if something is wrong
 function validate_fields(
   item_id: string,
   item_name: string,
@@ -160,6 +173,7 @@ function validate_fields(
   return '';
 }
 
+// this function reads the form fields, validates them and adds a new item to the inventory
 function add_item(): void {
   const item_id: string       = get_input_value('input_id');
   const item_name: string     = get_input_value('input_name');
@@ -180,6 +194,7 @@ function add_item(): void {
     return;
   }
 
+  // loops through inventory to check if the item id already exists
   let already_exists: boolean = false;
   for (let i: number = 0; i < inventory.length; i++) {
     if (inventory[i].item_id === item_id) {
@@ -211,6 +226,7 @@ function add_item(): void {
   display_all_items();
 }
 
+// this function finds an item by name and loads it into the form for editing
 function load_item_for_edit(): void {
   const search_name: string = get_input_value('edit_name_input').toLowerCase();
 
@@ -219,6 +235,7 @@ function load_item_for_edit(): void {
     return;
   }
 
+  // loops through inventory to find a matching name
   let found_index: number = -1;
   for (let i: number = 0; i < inventory.length; i++) {
     if (inventory[i].item_name.toLowerCase() === search_name) {
@@ -234,6 +251,7 @@ function load_item_for_edit(): void {
 
   const found: InventoryItem = inventory[found_index];
 
+  // fills each form field with the found items values
   (document.getElementById('input_id') as HTMLInputElement).value       = found.item_id;
   (document.getElementById('input_name') as HTMLInputElement).value     = found.item_name;
   (document.getElementById('input_category') as HTMLInputElement).value = found.category;
@@ -247,6 +265,7 @@ function load_item_for_edit(): void {
   show_message('info', found.item_name + ' loaded. Make your changes then click Update Item.');
 }
 
+// this function finds an item by name and replaces it with the updated form values
 function update_item(): void {
   const item_id: string       = get_input_value('input_id');
   const item_name: string     = get_input_value('input_name');
@@ -267,6 +286,7 @@ function update_item(): void {
     return;
   }
 
+  // loops through inventory to find the item by name
   let found_index: number = -1;
   for (let i: number = 0; i < inventory.length; i++) {
     if (inventory[i].item_name.toLowerCase() === item_name.toLowerCase()) {
@@ -280,6 +300,7 @@ function update_item(): void {
     return;
   }
 
+  // replaces the old item with the updated values
   inventory[found_index] = {
     item_id:       item_id,
     item_name:     item_name,
@@ -297,6 +318,7 @@ function update_item(): void {
   display_all_items();
 }
 
+// this function finds the item by name and shows an inline confirmation box before deleting
 function delete_item(): void {
   const delete_name: string = get_input_value('delete_name_input');
 
@@ -320,6 +342,7 @@ function delete_item(): void {
 
   const item_name: string = inventory[found_index].item_name;
 
+  // builds a confirmation box and injects it into the page
   const confirm_div = document.getElementById('confirm_area') as HTMLDivElement;
   confirm_div.innerHTML =
     '<div class="confirm_box">' +
@@ -329,6 +352,7 @@ function delete_item(): void {
     '</div>';
 }
 
+// this function removes the item from the inventory array at the given index
 function confirm_delete(index: number): void {
   const item_name: string = inventory[index].item_name;
   inventory.splice(index, 1);
@@ -341,12 +365,14 @@ function confirm_delete(index: number): void {
   display_all_items();
 }
 
+// this function clears the confirmation box without deleting anything
 function cancel_delete(): void {
   const confirm_div = document.getElementById('confirm_area') as HTMLDivElement;
   confirm_div.innerHTML = '';
   show_message('info', 'Delete cancelled.');
 }
 
+// this function loops through the inventory and returns items that match the search term
 function search_items(): void {
   const search_term: string = get_input_value('search_input').toLowerCase();
 
@@ -365,11 +391,13 @@ function search_items(): void {
   render_items_table(results, 'search_results', 'Results for ' + search_term);
 }
 
+// this function displays all items in the inventory table
 function display_all_items(): void {
   render_items_table(inventory, 'all_items_display', 'All Inventory Items');
   render_items_table(inventory, 'all_items_table', 'All Inventory Items');
 }
 
+// this function loops through inventory and displays only items marked as popular
 function display_popular_items(): void {
   const popular: InventoryItem[] = [];
   for (let i: number = 0; i < inventory.length; i++) {
@@ -380,6 +408,7 @@ function display_popular_items(): void {
   render_items_table(popular, 'popular_items_display', 'Popular Items');
 }
 
+// this function builds an html table from the items array and injects it into the container
 function render_items_table(items: InventoryItem[], container_id: string, title: string): void {
   const container = document.getElementById(container_id) as HTMLDivElement;
   if (!container) {
@@ -403,6 +432,7 @@ function render_items_table(items: InventoryItem[], container_id: string, title:
   html += '<th>Price</th><th>Supplier</th><th>Stock Status</th><th>Popular</th><th>Comment</th>';
   html += '</tr></thead><tbody>';
 
+  // loops through each item and builds a table row
   for (let i: number = 0; i < items.length; i++) {
     const item: InventoryItem = items[i];
     const comment_text: string = item.comment !== '' ? item.comment : '-';
@@ -414,7 +444,7 @@ function render_items_table(items: InventoryItem[], container_id: string, title:
     html += '<td>' + item.quantity + '</td>';
     html += '<td>$' + item.price.toFixed(2) + '</td>';
     html += '<td>' + item.supplier_name + '</td>';
-   html += '<td>' + item.stock_status + '</td>';
+    html += '<td>' + item.stock_status + '</td>';
     html += '<td>' + item.popular_item + '</td>';
     html += '<td>' + comment_text + '</td>';
     html += '</tr>';
@@ -424,6 +454,7 @@ function render_items_table(items: InventoryItem[], container_id: string, title:
   container.innerHTML = html;
 }
 
+// runs when the page first loads and displays the initial inventory table
 window.onload = function () {
   display_all_items();
 };

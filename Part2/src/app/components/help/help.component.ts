@@ -1,6 +1,13 @@
+// Title: Help Component
+// Author: Deon Miller
+// Student ID: 23748590
+// Unit: PROG2005
+// Assignment: Assessment 2 Part 2
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// this component displays the help page with an faq accordion and troubleshooting table
 @Component({
   selector: 'app-help',
   standalone: true,
@@ -10,8 +17,10 @@ import { CommonModule } from '@angular/common';
 })
 export class HelpComponent {
 
+  // tracks which faq is currently open, -1 means none are open
   open_faq_index: number = -1;
 
+  // list of faq questions and answers shown in the accordion
   faqs: { question: string; answer: string }[] = [
     {
       question: 'How do I add a new item?',
@@ -47,6 +56,7 @@ export class HelpComponent {
     }
   ];
 
+  // this function opens or closes a faq item when clicked
   toggle_faq(index: number): void {
     if (this.open_faq_index === index) {
       this.open_faq_index = -1;
