@@ -117,16 +117,6 @@ function show_section(section_id: string): void {
   }
 }
 
-function get_stock_class(stock_status: string): string {
-  if (stock_status === 'In Stock') {
-    return 'badge in_stock';
-  }
-  if (stock_status === 'Low Stock') {
-    return 'badge low_stock';
-  }
-  return 'badge out_stock';
-}
-
 function validate_fields(
   item_id: string,
   item_name: string,
@@ -415,7 +405,6 @@ function render_items_table(items: InventoryItem[], container_id: string, title:
 
   for (let i: number = 0; i < items.length; i++) {
     const item: InventoryItem = items[i];
-    const badge_class: string = get_stock_class(item.stock_status);
     const comment_text: string = item.comment !== '' ? item.comment : '-';
 
     html += '<tr>';
@@ -425,7 +414,7 @@ function render_items_table(items: InventoryItem[], container_id: string, title:
     html += '<td>' + item.quantity + '</td>';
     html += '<td>$' + item.price.toFixed(2) + '</td>';
     html += '<td>' + item.supplier_name + '</td>';
-    html += '<td><span class="' + badge_class + '">' + item.stock_status + '</span></td>';
+   html += '<td>' + item.stock_status + '</td>';
     html += '<td>' + item.popular_item + '</td>';
     html += '<td>' + comment_text + '</td>';
     html += '</tr>';

@@ -51,7 +51,7 @@
             <td>{{ item.quantity }}</td>
             <td>${{ item.price.toFixed(2) }}</td>
             <td>{{ item.supplier_name }}</td>
-            <td><span [class]="get_badge_class(item.stock_status)">{{ item.stock_status }}</span></td>
+            <td>{{ item.stock_status }}</td>
             <td>{{ item.popular_item }}</td>
             <td>{{ item.comment || '-' }}</td>
           </tr>
